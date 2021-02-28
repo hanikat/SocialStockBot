@@ -1,0 +1,30 @@
+Elasticsearch:
+1. wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.X.X-arm64.deb
+2. sudo dpkg -i --force-all elasticsearch-7.X.X-arm64.deb
+3. sudo chmod g+w /etc/elasticsearch
+4. sudo chown -R elasticsearch:elasticsearch /var/log/elasticsearch
+5. systemctl enable elasticsearch.service
+6. sudo nano /etc/elasticsearch/elasticsearch.yml => 
+	cluster.name: SocialStockBot-Cluster
+	node.name: SocialStockBot-Storage
+	path.data: /var/lib/elasticsearch
+	path.logs: /var/log/elasticsearch
+	xpack.ml.enabled: false
+	node.master: true
+	transport.host: 192.168.1.100
+	http.host: 192.168.1.100
+	bootstrap.system_call_filter: false
+	discovery.seed_hosts: ["192.168.1.100"]
+
+Kibana:
+1. wget https://artifacts.elastic.co/downloads/kibana/kibana-7.11.1-arm64.deb
+2. sudo dpkg -i --force-all  kibana-7.X.X-arm64.deb
+3. sudo nano /etc/kibana/kibana.yml =>
+	server.port: 5601
+	server.host: "192.168.1.100"
+	elasticsearch.hosts: ["http://localhost:9200"]
+	kibana.index: ".kibana"
+	elasticsearch.pingTimeout: 15000
+	elasticsearch.requestTimeout: 150000
+	elasticsearch.shardTimeout: 150000
+	cluster.initial_master_nodes: ["SocialStockBot-Storage"]
