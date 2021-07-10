@@ -11,17 +11,17 @@ Elasticsearch:
 	path.logs: /var/log/elasticsearch
 	xpack.ml.enabled: false
 	node.master: true
-	transport.host: 192.168.1.100
-	http.host: 192.168.1.100
+	transport.host: <IP-ADDRESS>
+	http.host: <IP-ADDRESS>
 	bootstrap.system_call_filter: false
-	discovery.seed_hosts: ["192.168.1.100"]
+	discovery.seed_hosts: ["<IP-ADDRESS>"]
 
 Kibana:
 1. wget https://artifacts.elastic.co/downloads/kibana/kibana-7.11.1-arm64.deb
 2. sudo dpkg -i --force-all  kibana-7.X.X-arm64.deb
 3. sudo nano /etc/kibana/kibana.yml =>
 	server.port: 5601
-	server.host: "192.168.1.100"
+	server.host: "<IP-ADDRESS>"
 	elasticsearch.hosts: ["http://localhost:9200"]
 	kibana.index: ".kibana"
 	elasticsearch.pingTimeout: 15000
