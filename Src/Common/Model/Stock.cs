@@ -19,6 +19,9 @@ namespace Common.Model
 
         [Number(NumberType.Integer, Name = "CurrencyId")]
         public int CurrencyId { get; set; }
+
+        [Number(NumberType.Integer, Name = "StockMarketId")]
+        public int StockMarketId { get; set; }
         
     }
 }

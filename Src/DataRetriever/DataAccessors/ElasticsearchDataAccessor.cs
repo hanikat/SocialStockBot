@@ -15,9 +15,7 @@ namespace DataRetriever
         {
         }
         private ElasticClient elasticsearchConnection = null;
-        private ConnectionSettings connectionSettings = new ConnectionSettings(new Uri(Settings.AppSetting["Elasticsearch:URL"]))
-            .DefaultMappingFor<Holding>(m => m.IndexName("holdings"))
-            .DefaultMappingFor<Currency>(m => m.IndexName("currencies"));
+        private ConnectionSettings connectionSettings = new ConnectionSettings(new Uri(Settings.AppSetting["Elasticsearch:URL"]));
         //.BasicAuthentication(Settings.AppSetting["Elasticsearch:Username"], Settings.AppSetting["Elasticsearch:Password"])
 
         private ElasticClient ElasticsearchConnection
