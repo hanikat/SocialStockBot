@@ -11,8 +11,5 @@ namespace Common.Model
         public string Name { get; set; }
         [Number(NumberType.Double, Name = "SekConversionRate")]
         public double SekConversionRate { get; set; }
-
-        
-
     }
 }
