@@ -390,3 +390,4 @@ FodyWeavers.xsd
 
 
 ## Custom ignores
+appsettings.json

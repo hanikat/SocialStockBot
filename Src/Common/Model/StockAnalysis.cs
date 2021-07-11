@@ -1,5 +1,4 @@
-﻿using Common.Elasticsearch;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +10,7 @@ namespace Common.Model
     {
         public int AnalyzerId { get; set; }
         public StockAnalyzer StockAnalyzer { get; set; }
-        public Keyword StockTicker { get; set; }
+        public string StockTicker { get; set; }
         public DateTime TimeStamp { get; set; }
         public byte Rating { get; set; }
     }

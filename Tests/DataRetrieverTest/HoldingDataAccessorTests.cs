@@ -1,4 +1,3 @@
-using Common.Elasticsearch;
 using Common.Model;
 using DataRetriever.DataAccessors;
 using DataRetrieverTests;

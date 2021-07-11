@@ -16,5 +16,8 @@ namespace Common.Model
 
         [Number(NumberType.Integer)]
         public int Id { get; set; }
+
+        [Date(Format = "date_time", Name = "UpdatedAt")]
+        public DateTime UpdatedAt { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using Xunit;
 
 namespace DataRetrieverTest
 {
-    public class CurrencyDataAccessorTests
+    public class StockDataAccessorTests
     {
         [Fact, TestPriority(0)]
         public void RecreateIndex()
@@ -17,16 +17,16 @@ namespace DataRetrieverTest
         }
         private void DeleteIndexTest()
         {
-            var dataAccessor = new CurrencyDataAccessor();
+            var dataAccessor = new StockDataAccessor();
             if (dataAccessor.IndexExists())
             {
                 dataAccessor.DeleteIndex();
             }
-            
+
         }
         private void CreateIndexTest()
         {
-            var dataAccessor = new CurrencyDataAccessor();
+            var dataAccessor = new StockDataAccessor();
             if (!dataAccessor.IndexExists())
             {
                 dataAccessor.CreateIndex();
@@ -34,20 +34,23 @@ namespace DataRetrieverTest
         }
 
         [Theory, TestPriority(2)]
-        [InlineData(1, "SEK", 1)]
-        [InlineData(2, "USD", 8.58)]
-        [InlineData(3, "EUR", 10.19)]
-        public void AddCurrencyTest(int id, string name, double sekConversionRate)
+        [InlineData(1, "Tesla, Inc.", 632860000000, "TSLA", 2)]
+        [InlineData(2, "Volvo, AB", 432000000000, "VOLV-B.ST", 1)]
+        [InlineData(3, "Bayerische Motoren Werke AG", 57060000000, "BMW.DE", 3)]
+
+        public void AddStockTest(int id, string name, double companyValue, string stockTicker, int currencyId)
         {
-            Currency currency = new Currency()
+            var stock = new Stock()
             {
                 Id = id,
-                SekConversionRate = sekConversionRate,
                 Name = name,
-                UpdatedAt = DateTime.Now
+                CompanyValue = companyValue,
+                StockTicker = stockTicker,
+                CurrencyId = currencyId
             };
 
-            new CurrencyDataAccessor().IndexDocument(currency);
+            new StockDataAccessor().IndexDocument(stock);
         }
+
     }
 }

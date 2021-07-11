@@ -37,6 +37,8 @@ namespace DataRetriever
 
         public virtual void IndexDocument(T document)
         {
+            document.UpdatedAt = DateTime.Now;
+
             var response = ElasticsearchConnection.Index(document, i => i.Index(document.IndexName));
             ValidateResponse(response);
         }

@@ -1,4 +1,4 @@
-﻿using Common.Elasticsearch;
+﻿using Nest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +7,24 @@ using System.Threading.Tasks;
 
 namespace Common.Model
 {
-    public class Stock
+    public class Stock : ElasticsearchIndex
     {
-        public Keyword StockTicker { get; set; }
-        public Keyword StockExchangeMIC { get; set; }
-        public string StockName { get; set; }
+        public override string IndexName
+        {
+            get { return "stocks"; }
+        }
+
+        [Text(Name = "StockTicker")]
+        public string StockTicker { get; set; }
+
+        [Text(Name = "Name")]
+        public string Name { get; set; }
+
+        [Number(NumberType.Double, Name = "CompanyValue")]
         public double CompanyValue { get; set; }
-        public DateTime LastUpdatedTimestamp { get; set; }
+
+        [Number(NumberType.Integer, Name = "CurrencyId")]
+        public int CurrencyId { get; set; }
+        
     }
 }

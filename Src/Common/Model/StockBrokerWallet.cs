@@ -1,5 +1,4 @@
-﻿using Common.Elasticsearch;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +10,7 @@ namespace Common.Model
     {
         public StockBroker StockBroker { get; set; }
         public double Amount { get; set; }
-        public Keyword CurrencyId { get; set; }
+        public int CurrencyId { get; set; }
         public Currency Currency { get; set; }
     }
 }
