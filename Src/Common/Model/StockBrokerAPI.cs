@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nest;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +9,16 @@ namespace Common.Model
 {
     public class StockBrokerAPI
     {
-        public StockBroker StockBroker { get; set; }
-        public byte StockBrokerId { get; set; }
+        [Text(Name = "Key")]
         public string Key { get; set; }
+
+        [Text(Name = "Username")]
         public string Username { get; set; }
+
+        [Text(Name = "Password")]
         public string Password { get; set; }
+
+        [Text(Name = "URL")]
         public string URL { get; set; }
     }
 }

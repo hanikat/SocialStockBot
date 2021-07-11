@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nest;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,11 @@ namespace Common.Model
 {
     public class StockBrokerWallet
     {
-        public StockBroker StockBroker { get; set; }
+
+        [Number(NumberType.Double, Name = "Amount")]
         public double Amount { get; set; }
+
+        [Number(NumberType.Integer, Name = "CurrencyId")]
         public int CurrencyId { get; set; }
-        public Currency Currency { get; set; }
     }
 }

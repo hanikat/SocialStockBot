@@ -9,12 +9,13 @@ namespace Common.Model
 {
     public abstract class ElasticsearchIndex
     {
+        [Ignore]
         public abstract string IndexName
         {
             get;
         }
 
-        [Number(NumberType.Integer)]
+        [Ignore]
         public int Id { get; set; }
 
         [Date(Format = "date_time", Name = "UpdatedAt")]
