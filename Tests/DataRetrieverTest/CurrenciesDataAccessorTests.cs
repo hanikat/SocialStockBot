@@ -1,53 +1,35 @@
 using Common.Model;
-using DataRetriever.DataAccessors;
-using DataRetrieverTests;
+using ElasticsearchDataAccess.DataAccessors;
 using System;
 using System.Threading;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
-namespace DataRetrieverTest
+namespace ElasticsearchDataAccessorTests
 {
-    public class CurrencyDataAccessorTests
+    public class CurrencyDataAccessorTests : IClassFixture<ElasticsearchFixture>
     {
-        [Fact, TestPriority(0)]
-        public void RecreateIndex()
+        ElasticsearchFixture fixture;
+        public CurrencyDataAccessorTests(ElasticsearchFixture fixture)
         {
-            DeleteIndexTest();
-            CreateIndexTest();
-        }
-        private void DeleteIndexTest()
-        {
-            var dataAccessor = new CurrencyDataAccessor();
-            if (dataAccessor.IndexExists())
-            {
-                dataAccessor.DeleteIndex();
-            }
-            
-        }
-        private void CreateIndexTest()
-        {
-            var dataAccessor = new CurrencyDataAccessor();
-            if (!dataAccessor.IndexExists())
-            {
-                dataAccessor.CreateIndex();
-            }
+            this.fixture = fixture;
         }
 
-        [Theory, TestPriority(2)]
+
+        [Theory]
         [InlineData(1, "SEK", 1)]
         [InlineData(2, "USD", 8.58)]
         [InlineData(3, "EUR", 10.19)]
-        public void AddCurrencyTest(int id, string name, double sekConversionRate)
+        public void ReadCurrencyTest(int id, string name, double sekConversionRate)
         {
-            Currency currency = new Currency()
-            {
-                Id = id,
-                SekConversionRate = sekConversionRate,
-                Name = name,
-                UpdatedAt = DateTime.Now
-            };
+            var dataAccessor = new CurrencyDataAccessor();
 
-            new CurrencyDataAccessor().IndexDocument(currency);
+            var item = dataAccessor.ReadDocument(new CurrencyKey(id));
+
+            Assert.Equal(id, item.Id);
+            Assert.Equal(name, item.Name);
+            Assert.Equal(sekConversionRate, item.SekConversionRate);
         }
     }
 }

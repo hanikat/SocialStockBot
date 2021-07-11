@@ -20,4 +20,14 @@ namespace Common.Model
         public int StockId { get; set; }
 
     }
+
+    public class HoldingKey : Key
+    {
+        public HoldingKey(int id) : base(id)
+        {
+        }
+
+        public override string IndexName => "holdings";
+
+    }
 }

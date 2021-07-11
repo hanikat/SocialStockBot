@@ -21,4 +21,14 @@ namespace Common.Model
         public byte Rating { get; set; }
         
     }
+
+    public class StockAnalysisKey : Key
+    {
+        public StockAnalysisKey(int id) : base(id)
+        {
+        }
+
+        public override string IndexName => "stock_analysis";
+
+    }
 }

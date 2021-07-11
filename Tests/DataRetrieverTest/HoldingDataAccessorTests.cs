@@ -1,78 +1,40 @@
 using Common.Model;
-using DataRetriever.DataAccessors;
-using DataRetrieverTests;
+using ElasticsearchDataAccess.DataAccessors;
 using System;
 using System.Threading;
 using Xunit;
 
-namespace DataRetrieverTest
+namespace ElasticsearchDataAccessorTests
 {
-    public class HoldingDataAccessorTests
+    public class HoldingDataAccessorTests : IClassFixture<ElasticsearchFixture>
     {
-        [Fact, TestPriority(0)]
-        public void RecreateIndex()
+        ElasticsearchFixture fixture;
+        public HoldingDataAccessorTests(ElasticsearchFixture fixture)
         {
-            DeleteIndexTest();
-            CreateIndexTest();
+            this.fixture = fixture;
         }
-        private void DeleteIndexTest()
+
+
+        [Theory]
+        [InlineData(1, 1, 1, 1, 2, 10.0, 100, 20.0, 5.0)]
+        [InlineData(2, 2, 2, 2, 1, 50.0, 10, 200.0, 15.0)]
+        [InlineData(3, 1, 3, 3, 1, 65.0, 100, 250.0, 45.0)]
+
+        public void ReadHoldingTest(int id, int stockBrokerId, int stockId, int currencyId, int conversionTargetCurrencyId, double price, int quantity, double priceTarget, double stopLoss)
         {
             var dataAccessor = new HoldingDataAccessor();
-            if (dataAccessor.IndexExists())
-            {
-                dataAccessor.DeleteIndex();
-            }
 
-        }
-        private void CreateIndexTest()
-        {
-            var dataAccessor = new HoldingDataAccessor();
-            if (!dataAccessor.IndexExists())
-            {
-                dataAccessor.CreateIndex();
-            }
-        }
+            var item = dataAccessor.ReadDocument(new HoldingKey(id));
 
-        [Theory, TestPriority(2)]
-        [InlineData(1, 1, 1, 1, 2, 10.0, 100, 20.0, 5.0, 7)]
-        [InlineData(2, 2, 2, 2, 1, 50.0, 10, 200.0, 15.0, 6)]
-        [InlineData(3, 1, 3, 3, 1, 65.0, 100, 250.0, 45.0, 5)]
-
-        public void AddHoldingTest(int id, int stockBrokerId, int stockId, int currencyId, int conversionTargetCurrencyId, double price, int quantity, double priceTarget, double stopLoss, int exitTime)
-        {
-            Holding holding = new Holding()
-            {
-                Id = id,
-                StockBrokerId = stockBrokerId,
-                StockId = stockId,
-                Acquisition = new Acquisition()
-                {
-                    CurrencyId = currencyId,
-                    ConversionTargetCurrencyId = conversionTargetCurrencyId,
-                    Fee = 0.0,
-                    Price = price,
-                    Quantity = quantity,
-                    Timestamp = DateTime.Now
-                },
-                ExitConditions = new ExitCondition()
-                {
-                    PriceTarget = new PriceTargetExitCondition()
-                    {
-                        Price = priceTarget
-                    },
-                    StopLoss = new StopLossExitCondition()
-                    {
-                        Price = stopLoss
-                    },
-                    TimeBased = new TimeBasedExitCondition()
-                    {
-                        ExitTimestamp = DateTime.Now.AddDays(exitTime)
-                    }
-                }
-                
-            };
-
-            new HoldingDataAccessor().IndexDocument(holding);
+            Assert.Equal(id, item.Id);
+            Assert.Equal(stockBrokerId, item.StockBrokerId);
+            Assert.Equal(stockId, item.StockId);
+            Assert.Equal(currencyId, item.Acquisition.CurrencyId);
+            Assert.Equal(conversionTargetCurrencyId, item.Acquisition.ConversionTargetCurrencyId);
+            Assert.Equal(price, item.Acquisition.Price);
+            Assert.Equal(quantity, item.Acquisition.Quantity);
+            Assert.Equal(priceTarget, item.ExitConditions.PriceTarget.Price);
+            Assert.Equal(stopLoss, item.ExitConditions.StopLoss.Price);
         }
 
     }

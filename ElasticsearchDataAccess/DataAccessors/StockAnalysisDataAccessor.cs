@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Common.Model;
 
-namespace DataRetriever.DataAccessors
+namespace ElasticsearchDataAccess.DataAccessors
 {
     public class StockAnalysisDataAccessor : ElasticsearchDataAccessor<StockAnalysis>
     {

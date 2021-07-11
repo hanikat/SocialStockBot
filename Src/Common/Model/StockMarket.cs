@@ -25,5 +25,15 @@ namespace Common.Model
         public TimeZoneInfo TimeZone { get; set; }
     }
 
-    
+    public class StockMarketKey : Key
+    {
+        public StockMarketKey(int id) : base(id)
+        {
+        }
+
+        public override string IndexName => "stock_market";
+
+    }
+
+
 }

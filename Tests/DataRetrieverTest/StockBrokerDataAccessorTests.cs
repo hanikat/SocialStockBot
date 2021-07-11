@@ -1,63 +1,35 @@
 using Common.Model;
-using DataRetriever.DataAccessors;
-using DataRetrieverTests;
-using System;
-using System.Threading;
+using ElasticsearchDataAccess.DataAccessors;
 using Xunit;
 
-namespace DataRetrieverTest
+namespace ElasticsearchDataAccessorTests
 {
-    public class StockBrokerDataAccessorTests
+    public class StockBrokerDataAccessorTests : IClassFixture<ElasticsearchFixture>
     {
-        [Fact, TestPriority(0)]
-        public void RecreateIndex()
+        ElasticsearchFixture fixture;
+        public StockBrokerDataAccessorTests(ElasticsearchFixture fixture)
         {
-            DeleteIndexTest();
-            CreateIndexTest();
-        }
-        private void DeleteIndexTest()
-        {
-            var dataAccessor = new StockBrokerDataAccessor();
-            if (dataAccessor.IndexExists())
-            {
-                dataAccessor.DeleteIndex();
-            }
-
-        }
-        private void CreateIndexTest()
-        {
-            var dataAccessor = new StockBrokerDataAccessor();
-            if (!dataAccessor.IndexExists())
-            {
-                dataAccessor.CreateIndex();
-            }
+            this.fixture = fixture;
         }
 
-        [Theory, TestPriority(2)]
+        [Theory]
         [InlineData(1, "Alpaca", "Y2xpZW50X2lkOmNsaWVudF9zZWNyZXQ=", "My-User", "My-Password", "https://broker-api.alpaca.markets/v1/", 100000000, 2)]
         [InlineData(2, "Nordnet", "PPxSdewascmNsaWVudF9zZWNyYUJKKQ=", "My-User", "My-Password", "https://www.nordnet.se/api/2", 100000, 1)]
 
         public void AddStockBrokerTest(int id, string name, string key, string username, string password, string url, double amount, int currencyId)
         {
-            StockBroker stockBroker = new StockBroker()
-            {
-                Id = id,
-                Name = name,
-                API = new StockBrokerAPI()
-                {
-                    Key = key,
-                    Username = username,
-                    Password = password,
-                    URL = url
-                },
-                Wallet = new StockBrokerWallet()
-                {
-                    Amount = amount,
-                    CurrencyId = currencyId
-                }
-            };
+            var dataAccessor = new StockBrokerDataAccessor();
 
-            new StockBrokerDataAccessor().IndexDocument(stockBroker);
+            var item = dataAccessor.ReadDocument(new StockBrokerKey(id));
+
+            Assert.Equal(id, item.Id);
+            Assert.Equal(name, item.Name);
+            Assert.Equal(key, item.API.Key);
+            Assert.Equal(username, item.API.Username);
+            Assert.Equal(password, item.API.Password);
+            Assert.Equal(url, item.API.URL);
+            Assert.Equal(amount, item.Wallet.Amount);
+            Assert.Equal(currencyId, item.Wallet.CurrencyId);
         }
 
     }

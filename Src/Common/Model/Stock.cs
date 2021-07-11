@@ -24,4 +24,14 @@ namespace Common.Model
         public int StockMarketId { get; set; }
         
     }
+
+    public class StockKey : Key
+    {
+        public StockKey(int id) : base(id)
+        {
+        }
+
+        public override string IndexName => "stocks";
+
+    }
 }

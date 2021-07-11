@@ -5,23 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using Common.Model;
 
-namespace DataRetriever.DataAccessors
+namespace ElasticsearchDataAccess.DataAccessors
 {
-    public class StockAnalyzerDataAccessor : ElasticsearchDataAccessor<StockAnalyzer>
+    public class StockDataAccessor : ElasticsearchDataAccessor<Stock>
     {
         public override void CreateIndex()
         {
-            CreateIndex(new StockAnalyzer());
+            CreateIndex(new Stock());
         }
 
         public override void DeleteIndex()
         {
-            DeleteIndex(new StockAnalyzer());
+            DeleteIndex(new Stock());
         }
 
         public override bool IndexExists()
         {
-            return IndexExists(new StockAnalyzer());
+            return IndexExists(new Stock());
         }
     }
 }

@@ -1,55 +1,35 @@
 using Common.Model;
-using DataRetriever.DataAccessors;
-using DataRetrieverTests;
+using ElasticsearchDataAccess.DataAccessors;
 using System;
 using System.Threading;
 using Xunit;
 
-namespace DataRetrieverTest
+namespace ElasticsearchDataAccessorTests
 {
-    public class StockPriceDataAccessorTests
+    public class StockPriceDataAccessorTests : IClassFixture<ElasticsearchFixture>
     {
-        [Fact, TestPriority(0)]
-        public void RecreateIndex()
+        ElasticsearchFixture fixture;
+        public StockPriceDataAccessorTests(ElasticsearchFixture fixture)
         {
-            DeleteIndexTest();
-            CreateIndexTest();
-        }
-        private void DeleteIndexTest()
-        {
-            var dataAccessor = new StockPriceDataAccessor();
-            if (dataAccessor.IndexExists())
-            {
-                dataAccessor.DeleteIndex();
-            }
-
-        }
-        private void CreateIndexTest()
-        {
-            var dataAccessor = new StockPriceDataAccessor();
-            if (!dataAccessor.IndexExists())
-            {
-                dataAccessor.CreateIndex();
-            }
+            this.fixture = fixture;
         }
 
-        [Theory, TestPriority(2)]
+        [Theory]
         [InlineData(1, 1, 656.95, 662.03, 632860000000)]
         [InlineData(2, 2, 211.95, 18.35, 432000000000)]
         [InlineData(3, 3, 87.68, 9.58, 57060000000)]
 
         public void AddStockPriceTest(int id, int stockId, double currentPrice, double pe, double companyValue)
         {
-            var stockPrice = new StockPrice()
-            {
-                Id = id,
-                StockId = stockId,
-                CurrentPrice = currentPrice,
-                PE = pe,
-                CompanyValue = companyValue
-            };
+            var dataAccessor = new StockPriceDataAccessor();
 
-            new StockPriceDataAccessor().IndexDocument(stockPrice);
+            var item = dataAccessor.ReadDocument(new StockPriceKey(id));
+
+            Assert.Equal(id, item.Id);
+            Assert.Equal(stockId, item.StockId);
+            Assert.Equal(currentPrice, item.CurrentPrice);
+            Assert.Equal(pe, item.PE);
+            Assert.Equal(companyValue, item.CompanyValue);
         }
 
     }

@@ -19,4 +19,14 @@ namespace Common.Model
 
         
     }
+
+    public class StockAnalyzerKey : Key
+    {
+        public StockAnalyzerKey(int id) : base(id)
+        {
+        }
+
+        public override string IndexName => "stock_analyzer";
+
+    }
 }

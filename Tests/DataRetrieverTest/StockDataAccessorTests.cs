@@ -1,54 +1,32 @@
 using Common.Model;
-using DataRetriever.DataAccessors;
-using DataRetrieverTests;
-using System;
-using System.Threading;
+using ElasticsearchDataAccess.DataAccessors;
 using Xunit;
 
-namespace DataRetrieverTest
+namespace ElasticsearchDataAccessorTests
 {
-    public class StockDataAccessorTests
+    public class StockDataAccessorTests : IClassFixture<ElasticsearchFixture>
     {
-        [Fact, TestPriority(0)]
-        public void RecreateIndex()
+        ElasticsearchFixture fixture;
+        public StockDataAccessorTests(ElasticsearchFixture fixture)
         {
-            DeleteIndexTest();
-            CreateIndexTest();
-        }
-        private void DeleteIndexTest()
-        {
-            var dataAccessor = new StockDataAccessor();
-            if (dataAccessor.IndexExists())
-            {
-                dataAccessor.DeleteIndex();
-            }
-
-        }
-        private void CreateIndexTest()
-        {
-            var dataAccessor = new StockDataAccessor();
-            if (!dataAccessor.IndexExists())
-            {
-                dataAccessor.CreateIndex();
-            }
+            this.fixture = fixture;
         }
 
-        [Theory, TestPriority(2)]
+        [Theory]
         [InlineData(1, "Tesla, Inc.", "TSLA", 2)]
         [InlineData(2, "Volvo, AB", "VOLV-B.ST", 1)]
         [InlineData(3, "Bayerische Motoren Werke AG", "BMW.DE", 3)]
 
         public void AddStockTest(int id, string name, string stockTicker, int currencyId)
         {
-            var stock = new Stock()
-            {
-                Id = id,
-                Name = name,
-                StockTicker = stockTicker,
-                CurrencyId = currencyId
-            };
+            var dataAccessor = new StockDataAccessor();
 
-            new StockDataAccessor().IndexDocument(stock);
+            var item = dataAccessor.ReadDocument(new StockKey(id));
+
+            Assert.Equal(id, item.Id);
+            Assert.Equal(name, item.Name);
+            Assert.Equal(stockTicker, item.StockTicker);
+            Assert.Equal(currencyId, item.CurrencyId);
         }
 
     }

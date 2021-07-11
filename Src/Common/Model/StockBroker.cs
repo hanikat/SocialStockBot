@@ -20,4 +20,14 @@ namespace Common.Model
         [Nested(Name = "Wallet")]
         public StockBrokerWallet Wallet { get; set; }
     }
+
+    public class StockBrokerKey : Key
+    {
+        public StockBrokerKey(int id) : base(id)
+        {
+        }
+
+        public override string IndexName => "stock_broker";
+
+    }
 }

@@ -1,51 +1,31 @@
 using Common.Model;
-using DataRetriever.DataAccessors;
-using DataRetrieverTests;
+using ElasticsearchDataAccess.DataAccessors;
 using System;
 using System.Threading;
 using Xunit;
 
-namespace DataRetrieverTest
+namespace ElasticsearchDataAccessorTests
 {
-    public class StockAnalyzerDataAccessorTests
+    public class StockAnalyzerDataAccessorTests : IClassFixture<ElasticsearchFixture>
     {
-        [Fact, TestPriority(0)]
-        public void RecreateIndex()
+        ElasticsearchFixture fixture;
+        public StockAnalyzerDataAccessorTests(ElasticsearchFixture fixture)
         {
-            DeleteIndexTest();
-            CreateIndexTest();
-        }
-        private void DeleteIndexTest()
-        {
-            var dataAccessor = new StockAnalyzerDataAccessor();
-            if (dataAccessor.IndexExists())
-            {
-                dataAccessor.DeleteIndex();
-            }
-            
-        }
-        private void CreateIndexTest()
-        {
-            var dataAccessor = new StockAnalyzerDataAccessor();
-            if (!dataAccessor.IndexExists())
-            {
-                dataAccessor.CreateIndex();
-            }
+            this.fixture = fixture;
         }
 
-        [Theory, TestPriority(2)]
+        [Theory]
         [InlineData(1, "BENZINGA", "https://www.benzinga.com/analyst-ratings")]
         [InlineData(2, "TIPRANKS", "https://www.tipranks.com/")]
-        public void AddStockAnalyzerTest(int id, string name, string searchURL)
+        public void ReadStockAnalyzerTest(int id, string name, string searchURL)
         {
-            StockAnalyzer stockAnalyzer = new StockAnalyzer()
-            {
-                Id = id,
-                Name = name,
-                SearchURL = searchURL
-            };
+            var dataAccessor = new StockAnalyzerDataAccessor();
 
-            new StockAnalyzerDataAccessor().IndexDocument(stockAnalyzer);
+            var item = dataAccessor.ReadDocument(new StockAnalyzerKey(id));
+
+            Assert.Equal(id, item.Id);
+            Assert.Equal(name, item.Name);
+            Assert.Equal(searchURL, item.SearchURL);
         }
     }
 }

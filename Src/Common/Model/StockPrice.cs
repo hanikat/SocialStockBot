@@ -24,4 +24,14 @@ namespace Common.Model
         public double CompanyValue { get; set; }
 
     }
+
+    public class StockPriceKey : Key
+    {
+        public StockPriceKey(int id) : base(id)
+        {
+        }
+
+        public override string IndexName => "stock_prices";
+
+    }
 }

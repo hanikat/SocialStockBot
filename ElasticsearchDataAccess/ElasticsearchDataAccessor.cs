@@ -2,21 +2,20 @@
 using Nest;
 using System;
 using System.Collections.Generic;
+
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataRetriever
+namespace ElasticsearchDataAccess
 {
     public abstract class ElasticsearchDataAccessor<T> where T : ElasticsearchIndex
     {
         
         public ElasticsearchDataAccessor()
-        {
-        }
+        {}
         private ElasticClient elasticsearchConnection = null;
-        private ConnectionSettings connectionSettings = new ConnectionSettings(new Uri(Settings.AppSetting["Elasticsearch:URL"]));
-        //.BasicAuthentication(Settings.AppSetting["Elasticsearch:Username"], Settings.AppSetting["Elasticsearch:Password"])
+        private ConnectionSettings connectionSettings = new ConnectionSettings(new Uri(Settings.ElasticsearchURL));
 
         private ElasticClient ElasticsearchConnection
         {
@@ -89,17 +88,9 @@ namespace DataRetriever
 
 
 
-        public virtual IEnumerable<T> ReadDocumentById(int id)
+        public virtual T ReadDocument(Key key)
         {
-            return ElasticsearchConnection.Search<T>(s => s
-                .Query(q => q
-                    .Match(m => m
-                        .Field(f => f.Id)
-                        .Query(id.ToString())
-                    )
-                )
-            ).Documents;
-
+            return ElasticsearchConnection.Get<T>(key.Id, g => g.Index(key.IndexName)).Source;
         }
 
 

@@ -15,7 +15,7 @@ namespace Common.Model
             get;
         }
 
-        [Ignore]
+        [Number(NumberType.Integer, Name = "Id")]
         public int Id { get; set; }
 
         [Date(Format = "date_time", Name = "UpdatedAt")]
