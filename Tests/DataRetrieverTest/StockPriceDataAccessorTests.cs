@@ -7,7 +7,7 @@ using Xunit;
 
 namespace DataRetrieverTest
 {
-    public class StockDataAccessorTests
+    public class StockPriceDataAccessorTests
     {
         [Fact, TestPriority(0)]
         public void RecreateIndex()
@@ -17,7 +17,7 @@ namespace DataRetrieverTest
         }
         private void DeleteIndexTest()
         {
-            var dataAccessor = new StockDataAccessor();
+            var dataAccessor = new StockPriceDataAccessor();
             if (dataAccessor.IndexExists())
             {
                 dataAccessor.DeleteIndex();
@@ -26,7 +26,7 @@ namespace DataRetrieverTest
         }
         private void CreateIndexTest()
         {
-            var dataAccessor = new StockDataAccessor();
+            var dataAccessor = new StockPriceDataAccessor();
             if (!dataAccessor.IndexExists())
             {
                 dataAccessor.CreateIndex();
@@ -34,21 +34,22 @@ namespace DataRetrieverTest
         }
 
         [Theory, TestPriority(2)]
-        [InlineData(1, "Tesla, Inc.", "TSLA", 2)]
-        [InlineData(2, "Volvo, AB", "VOLV-B.ST", 1)]
-        [InlineData(3, "Bayerische Motoren Werke AG", "BMW.DE", 3)]
+        [InlineData(1, 1, 656.95, 662.03, 632860000000)]
+        [InlineData(2, 2, 211.95, 18.35, 432000000000)]
+        [InlineData(3, 3, 87.68, 9.58, 57060000000)]
 
-        public void AddStockTest(int id, string name, string stockTicker, int currencyId)
+        public void AddStockPriceTest(int id, int stockId, double currentPrice, double pe, double companyValue)
         {
-            var stock = new Stock()
+            var stockPrice = new StockPrice()
             {
                 Id = id,
-                Name = name,
-                StockTicker = stockTicker,
-                CurrencyId = currencyId
+                StockId = stockId,
+                CurrentPrice = currentPrice,
+                PE = pe,
+                CompanyValue = companyValue
             };
 
-            new StockDataAccessor().IndexDocument(stock);
+            new StockPriceDataAccessor().IndexDocument(stockPrice);
         }
 
     }

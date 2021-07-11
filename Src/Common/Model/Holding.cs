@@ -5,6 +5,7 @@ namespace Common.Model
 {
     public class Holding : ElasticsearchIndex
     {
+        public override string IndexName => "holdings";
 
         [Object]
         public Acquisition Acquisition { get; set; }
@@ -18,9 +19,5 @@ namespace Common.Model
         [Number(NumberType.Integer, Name = "StockId")]
         public int StockId { get; set; }
 
-        public override string IndexName
-        {
-            get { return "holdings"; }
-        }
     }
 }
