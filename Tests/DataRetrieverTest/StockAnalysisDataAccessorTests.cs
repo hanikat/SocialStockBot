@@ -7,7 +7,7 @@ using Xunit;
 
 namespace DataRetrieverTest
 {
-    public class StockAnalyzerDataAccessorTests
+    public class StockAnalysisDataAccessorTests
     {
         [Fact, TestPriority(0)]
         public void RecreateIndex()
@@ -17,16 +17,16 @@ namespace DataRetrieverTest
         }
         private void DeleteIndexTest()
         {
-            var dataAccessor = new StockAnalyzerDataAccessor();
+            var dataAccessor = new StockAnalysisDataAccessor();
             if (dataAccessor.IndexExists())
             {
                 dataAccessor.DeleteIndex();
             }
-            
+
         }
         private void CreateIndexTest()
         {
-            var dataAccessor = new StockAnalyzerDataAccessor();
+            var dataAccessor = new StockAnalysisDataAccessor();
             if (!dataAccessor.IndexExists())
             {
                 dataAccessor.CreateIndex();
@@ -34,18 +34,22 @@ namespace DataRetrieverTest
         }
 
         [Theory, TestPriority(2)]
-        [InlineData(1, "BENZINGA", "https://www.benzinga.com/analyst-ratings")]
-        [InlineData(2, "TIPRANKS", "https://www.tipranks.com/")]
-        public void AddStockAnalyzerTest(int id, string name, string searchURL)
+        [InlineData(1, 1, 1, 5)]
+        [InlineData(2, 2, 1, 3)]
+        [InlineData(3, 3, 2, 2)]
+
+        public void AddStockPriceTest(int id, int stockId, int analyzerId, byte rating)
         {
-            StockAnalyzer stockAnalyzer = new StockAnalyzer()
+            StockAnalysis stockAnalysis = new StockAnalysis()
             {
                 Id = id,
-                Name = name,
-                SearchURL = searchURL
+                StockId = stockId,
+                AnalyzerId = analyzerId,
+                Rating = rating
             };
 
-            new StockAnalyzerDataAccessor().IndexDocument(stockAnalyzer);
+            new StockAnalysisDataAccessor().IndexDocument(stockAnalysis);
         }
+
     }
 }
