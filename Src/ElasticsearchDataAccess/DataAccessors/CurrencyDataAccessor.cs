@@ -7,7 +7,7 @@ using Common.Model;
 
 namespace ElasticsearchDataAccess.DataAccessors
 {
-    public class CurrencyDataAccessor : ElasticsearchDataAccessor<Currency>
+    public class CurrencyDataAccessor : ElasticsearchDataAccessor<Currency>, IElasticsearchIndexDataAccessor
     {
         public override void CreateIndex()
         {

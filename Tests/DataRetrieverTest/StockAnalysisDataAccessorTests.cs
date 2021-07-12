@@ -4,14 +4,15 @@ using Xunit;
 
 namespace ElasticsearchDataAccessorTests
 {
-    public class StockAnalysisDataAccessorTests : IClassFixture<ElasticsearchFixture>
+    [Collection("Elasticsearch collection")]
+    public class StockAnalysisDataAccessorTests
     {
         ElasticsearchFixture fixture;
+
         public StockAnalysisDataAccessorTests(ElasticsearchFixture fixture)
         {
             this.fixture = fixture;
         }
-
         [Theory]
         [InlineData(1, 1, 1, 5)]
         [InlineData(2, 2, 1, 3)]

@@ -8,11 +8,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace ElasticsearchDataAccessorTests
 {
     public class ElasticsearchFixture : IDisposable
     {
 
+        List<IElasticsearchIndexDataAccessor> dataAccessors = new List<IElasticsearchIndexDataAccessor>()
+            {
+                new CurrencyDataAccessor(),
+                new HoldingDataAccessor(),
+                new StockAnalysisDataAccessor(),
+                new StockAnalyzerDataAccessor(),
+                new StockBrokerDataAccessor(),
+                new StockDataAccessor(),
+                new StockMarketDataAccessor(),
+                new StockPriceDataAccessor()
+            };
 
         public ElasticsearchFixture()
         {
@@ -58,144 +70,27 @@ namespace ElasticsearchDataAccessorTests
 
         private void DeleteIndices()
         {
-            var currencyDataAccessor = new CurrencyDataAccessor();
-            if (currencyDataAccessor.IndexExists())
+            foreach(var dataAccessor in dataAccessors)
             {
-                currencyDataAccessor.DeleteIndex();
+                dataAccessor.DeleteIndex();
             }
-
-            var holdingDataAccessor = new HoldingDataAccessor();
-            if (holdingDataAccessor.IndexExists())
-            {
-                holdingDataAccessor.DeleteIndex();
-            }
-
-            var stockAnalysisDataAccessor = new StockAnalysisDataAccessor();
-            if (stockAnalysisDataAccessor.IndexExists())
-            {
-                stockAnalysisDataAccessor.DeleteIndex();
-            }
-
-            var stockAnalyzerDataAccessor = new StockAnalyzerDataAccessor();
-            if (stockAnalyzerDataAccessor.IndexExists())
-            {
-                stockAnalyzerDataAccessor.DeleteIndex();
-            }
-
-            var stockBrokerDataAccessor = new StockBrokerDataAccessor();
-            if (stockBrokerDataAccessor.IndexExists())
-            {
-                stockBrokerDataAccessor.DeleteIndex();
-            }
-
-            var stockDataAccessor = new StockDataAccessor();
-            if (stockDataAccessor.IndexExists())
-            {
-                stockDataAccessor.DeleteIndex();
-            }
-
-            var stockMarketDataAccessor = new StockMarketDataAccessor();
-            if (stockMarketDataAccessor.IndexExists())
-            {
-                stockMarketDataAccessor.DeleteIndex();
-            }
-
-            var stockPriceDataAccessor = new StockPriceDataAccessor();
-            if (stockPriceDataAccessor.IndexExists())
-            {
-                stockPriceDataAccessor.DeleteIndex();
-            }
-
         }
         private void RecreateIndices()
         {
-            var currencyDataAccessor = new CurrencyDataAccessor();
-            if (currencyDataAccessor.IndexExists())
-            {
-                currencyDataAccessor.DeleteIndex();
-                currencyDataAccessor.CreateIndex();
-            }
-            else
-            {
-                currencyDataAccessor.CreateIndex();
-            }
 
-            var holdingDataAccessor = new HoldingDataAccessor();
-            if (holdingDataAccessor.IndexExists())
+            foreach(var dataAccessor in dataAccessors)
             {
-                holdingDataAccessor.DeleteIndex();
-                holdingDataAccessor.CreateIndex();
+                if (dataAccessor.IndexExists())
+                {
+                    dataAccessor.DeleteIndex();
+                    dataAccessor.CreateIndex();
+                }
+                else
+                {
+                    dataAccessor.CreateIndex();
+                }
             }
-            else
-            {
-                holdingDataAccessor.CreateIndex();
-            }
-
-            var stockAnalysisDataAccessor = new StockAnalysisDataAccessor();
-            if (stockAnalysisDataAccessor.IndexExists())
-            {
-                stockAnalysisDataAccessor.DeleteIndex();
-                stockAnalysisDataAccessor.CreateIndex();
-            }
-            else
-            {
-                stockAnalysisDataAccessor.CreateIndex();
-            }
-
-            var stockAnalyzerDataAccessor = new StockAnalyzerDataAccessor();
-            if (stockAnalyzerDataAccessor.IndexExists())
-            {
-                stockAnalyzerDataAccessor.DeleteIndex();
-                stockAnalyzerDataAccessor.CreateIndex();
-            }
-            else
-            {
-                stockAnalyzerDataAccessor.CreateIndex();
-            }
-
-            var stockBrokerDataAccessor = new StockBrokerDataAccessor();
-            if (stockBrokerDataAccessor.IndexExists())
-            {
-                stockBrokerDataAccessor.DeleteIndex();
-                stockBrokerDataAccessor.CreateIndex();
-            }
-            else
-            {
-                stockBrokerDataAccessor.CreateIndex();
-            }
-
-            var stockDataAccessor = new StockDataAccessor();
-            if (stockDataAccessor.IndexExists())
-            {
-                stockDataAccessor.DeleteIndex();
-                stockDataAccessor.CreateIndex();
-            }
-            else
-            {
-                stockDataAccessor.CreateIndex();
-            }
-
-            var stockMarketDataAccessor = new StockMarketDataAccessor();
-            if (stockMarketDataAccessor.IndexExists())
-            {
-                stockMarketDataAccessor.DeleteIndex();
-                stockMarketDataAccessor.CreateIndex();
-            }
-            else
-            {
-                stockMarketDataAccessor.CreateIndex();
-            }
-
-            var stockPriceDataAccessor = new StockPriceDataAccessor();
-            if (stockPriceDataAccessor.IndexExists())
-            {
-                stockPriceDataAccessor.DeleteIndex();
-                stockPriceDataAccessor.CreateIndex();
-            }
-            else
-            {
-                stockPriceDataAccessor.CreateIndex();
-            }
+            
         }
 
         private void AddCurrency(int id, string name, double sekConversionRate)
@@ -274,7 +169,7 @@ namespace ElasticsearchDataAccessorTests
 
             new StockPriceDataAccessor().IndexDocument(stockPrice);
         }
-        
+
         private void AddStockAnalyzer(int id, string name, string searchURL)
         {
             StockAnalyzer stockAnalyzer = new StockAnalyzer()
@@ -286,7 +181,7 @@ namespace ElasticsearchDataAccessorTests
 
             new StockAnalyzerDataAccessor().IndexDocument(stockAnalyzer);
         }
-        
+
         private void AddStockBroker(int id, string name, string key, string username, string password, string url, double amount, int currencyId)
         {
             StockBroker stockBroker = new StockBroker()
@@ -343,3 +238,4 @@ namespace ElasticsearchDataAccessorTests
         }
     }
 }
+

@@ -8,14 +8,15 @@ using Xunit;
 
 namespace ElasticsearchDataAccessorTests
 {
-    public class CurrencyDataAccessorTests : IClassFixture<ElasticsearchFixture>
+    [Collection("Elasticsearch collection")]
+    public class CurrencyDataAccessorTests 
     {
         ElasticsearchFixture fixture;
+
         public CurrencyDataAccessorTests(ElasticsearchFixture fixture)
         {
             this.fixture = fixture;
         }
-
 
         [Theory]
         [InlineData(1, "SEK", 1)]

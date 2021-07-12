@@ -7,7 +7,7 @@ using Common.Model;
 
 namespace ElasticsearchDataAccess.DataAccessors
 {
-    public class StockPriceDataAccessor : ElasticsearchDataAccessor<StockPrice>
+    public class StockPriceDataAccessor : ElasticsearchDataAccessor<StockPrice>, IElasticsearchIndexDataAccessor
     {
         public override void CreateIndex()
         {

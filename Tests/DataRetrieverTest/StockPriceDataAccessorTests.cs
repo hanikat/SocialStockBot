@@ -6,9 +6,11 @@ using Xunit;
 
 namespace ElasticsearchDataAccessorTests
 {
-    public class StockPriceDataAccessorTests : IClassFixture<ElasticsearchFixture>
+    [Collection("Elasticsearch collection")]
+    public class StockPriceDataAccessorTests
     {
         ElasticsearchFixture fixture;
+
         public StockPriceDataAccessorTests(ElasticsearchFixture fixture)
         {
             this.fixture = fixture;

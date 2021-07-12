@@ -3,17 +3,17 @@ using ElasticsearchDataAccess.DataAccessors;
 using System;
 using System.Threading;
 using Xunit;
-
 namespace ElasticsearchDataAccessorTests
 {
-    public class StockAnalyzerDataAccessorTests : IClassFixture<ElasticsearchFixture>
+    [Collection("Elasticsearch collection")]
+    public class StockAnalyzerDataAccessorTests
     {
         ElasticsearchFixture fixture;
+
         public StockAnalyzerDataAccessorTests(ElasticsearchFixture fixture)
         {
             this.fixture = fixture;
         }
-
         [Theory]
         [InlineData(1, "BENZINGA", "https://www.benzinga.com/analyst-ratings")]
         [InlineData(2, "TIPRANKS", "https://www.tipranks.com/")]
@@ -28,4 +28,5 @@ namespace ElasticsearchDataAccessorTests
             Assert.Equal(searchURL, item.SearchURL);
         }
     }
+
 }

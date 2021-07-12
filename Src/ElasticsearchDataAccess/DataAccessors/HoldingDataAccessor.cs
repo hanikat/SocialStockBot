@@ -7,7 +7,7 @@ using Common.Model;
 
 namespace ElasticsearchDataAccess.DataAccessors
 {
-    public class HoldingDataAccessor : ElasticsearchDataAccessor<Holding>
+    public class HoldingDataAccessor : ElasticsearchDataAccessor<Holding>, IElasticsearchIndexDataAccessor
     {
         public override void CreateIndex()
         {

@@ -3,17 +3,17 @@ using ElasticsearchDataAccess.DataAccessors;
 using System;
 using System.Threading;
 using Xunit;
-
 namespace ElasticsearchDataAccessorTests
 {
-    public class HoldingDataAccessorTests : IClassFixture<ElasticsearchFixture>
+    [Collection("Elasticsearch collection")]
+    public class HoldingDataAccessorTests
     {
         ElasticsearchFixture fixture;
+
         public HoldingDataAccessorTests(ElasticsearchFixture fixture)
         {
             this.fixture = fixture;
         }
-
 
         [Theory]
         [InlineData(1, 1, 1, 1, 2, 10.0, 100, 20.0, 5.0)]
@@ -38,4 +38,5 @@ namespace ElasticsearchDataAccessorTests
         }
 
     }
+
 }
